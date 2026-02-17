@@ -71,11 +71,47 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
     if (req.userID !== post.userID.toString()) return res.status(403).json({status: "unauthorized"})
     await post.deleteOne()
-
     res.json({status: "success"})
 
     
 
+})
+
+router.get('/', authenticateToken, async (req, res) => {
+    try {
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+        const skip = (page - 1) * limit
+        const [todos, total] = await Promise.all([
+            Todo.find({userID: req.userID.toString()})
+            .lean()
+            .skip(skip)
+            .limit(limit), 
+            Todo.countDocuments({userID: req.userID})])
+
+        console.log(todos, total)
+       
+
+        res.json({
+            status: "success",
+            data: todos.map(todo => ({
+                id: todo._id.toString(),
+                title: todo.title,
+                description: todo.description
+            })),
+            page: page,
+            limit: limit,
+            total: total
+        })
+
+
+
+
+    } catch (error) {
+        res.status(500).json({
+            status: "error"
+        })
+    }
 })
 
 
