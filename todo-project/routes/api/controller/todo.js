@@ -66,6 +66,18 @@ router.put('/:id', authenticateToken, async (req, res) => {
    
 })
 
+router.delete('/:id', authenticateToken, async (req, res) => {
+    const post = await Todo.findById(req.params.id)
+
+    if (req.userID !== post.userID.toString()) return res.status(403).json({status: "unauthorized"})
+    await post.deleteOne()
+
+    res.json({status: "success"})
+
+    
+
+})
+
 
 
 module.exports = router
