@@ -7,7 +7,7 @@ var logger = require('morgan');
 // var models = require('./model.js')
 
 var apiRouter = require('./routes/api/api.js')
-mongoose.connect('mongodb+srv://labradml_db_user:iWyc5BnM8zg0QNSN@cluster0.cqp624z.mongodb.net/tododb')
+// mongoose.connect('mongodb+srv://labradml_db_user:iWyc5BnM8zg0QNSN@cluster0.cqp624z.mongodb.net/tododb')
 var app = express();
 
 // view engine setup
