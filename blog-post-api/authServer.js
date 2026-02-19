@@ -9,6 +9,8 @@ require('dotenv').config()
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(express.urlencoded({ extended: false }));
+
 
 try {
     mongoose.connect(process.env.MONGOOSE_URI)
@@ -39,15 +41,50 @@ app.post('/register', async (req, res) => {
     //send token to user via cookie
     
     res.cookie('token', token, {
-    httpOnly: true,
-    secure: true,
+        httpOnly: true,
+        secure: true,
         sameSite: 'strict',
         maxAge: 60 * 60 * 1000,
     }).json({status: "success"})
+
 } catch (err) {
         console.log(err)
         res.status(500).json({status: 'error registering user'})
     }
+})
+
+app.post('/login', async (req, res) => {
+    try {
+        //grab username and password from req.body
+        const {username, password} = req.body
+        console.log(username, password)
+        //look up username in db
+        const user = await User.findOne({username: username})
+        console.log(user)
+
+        //do a check. if null, user doesn't exist send 403 error
+        if (user === null) return res.status(403).json({status: "user does not exist"})
+
+        //use bcrypt to compare passwords
+        const test = await bcrypt.compare(password, user.password)
+        
+        if (!test) return res.status(403).json({status: "invalid password"})
+        
+        //generate token
+        const token = generateAccessToken({userID: user._id.toString(), username: username})
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 10000
+        }).json({status: "successful login"})
+      
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({status: "error"})
+    }
+    
 })
 
 
