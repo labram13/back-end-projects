@@ -1,9 +1,10 @@
 const mongoose = require('mongoose')
 
 const testSchema = new mongoose.Schema({
-    test: String
+    name: String,
+    email: String
 })
 
-const TestModel = new mongoose.model('Test', testSchema)
+const TestModel = new mongoose.model('poop', testSchema)
 
 module.exports = TestModel
