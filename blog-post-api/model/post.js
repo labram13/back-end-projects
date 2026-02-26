@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 
 const postSchema = new mongoose.Schema({
-    userID: mongoose.Schema.Types.ObjectId,
-    title: String,
-    content: String,
-    category: String,
-    tags: [String]
-})
+        userID: mongoose.Schema.Types.ObjectId,
+        title: String,
+        content: String,
+        category: String,
+        tags: [String] 
+   
+}, {timestamps:true})
 
 const PostModel = new mongoose.model('Post', postSchema)
 

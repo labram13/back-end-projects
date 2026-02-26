@@ -14,7 +14,6 @@ function authenticateToken(req, res, next) {
 
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
         if (err) return res.status(403).json({status: "invalid token"})
-           
         req.userID = user.userID
     }) 
 
