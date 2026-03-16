@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express()
-const authenticateToken = require('../../middleware/authenticateToken')
+const authenticateToken = require('../../middleware/authenticateToken.js')
 const Post = require('../../model/post.js')
 
 router.post('/', authenticateToken, async (req, res) => {
