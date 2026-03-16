@@ -29,13 +29,12 @@ Blog post API that focus on CRUD API endpoints for a user's blog post. Allows fo
 
 6. Use Postman to test out API calls.
 
-7. Create a user with a POST to https://localhost:4000 with a raw body in JSON format. Example would be:
+7. Create a user with a POST to https://localhost:4000/register with a raw body in JSON format. Example would be:
 
 ```
 {
     "username": johndoe,
     "password": password
-
 }
 ```
 
@@ -54,3 +53,17 @@ You should get a status 200 showing a successful registration message.
 }
 
 ```
+
+You should receive at status 200 for successful post. 
+
+10. To retrieve all user posts, send a GET to https://localhost:3000/api/post.
+
+11. To update a post, use post's id from the retrieved json format from the step 10 and add that as a URL paramater as so. https://localhost:3000/api/posts/{postid here}. Send a PUT request adjusting any of the keys. If you want to change the title, simply put: 
+
+```
+{
+    "title": "updated by john doe"
+}
+```
+
+12. To delete a post, use the same url paramater's with a post's id, but instead make a DELETE request in Postman. 
