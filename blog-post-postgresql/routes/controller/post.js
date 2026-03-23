@@ -32,6 +32,34 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.put('/:id', async (req, res) =>{
+
+    try {
+        const {title, content, category, tags} = req.body
+        const post_id = parseInt(req.params.id)
+        console.log(post_id)
+        console.log(title)
+
+        const post = await pool.query(
+           `UPDATE post
+            SET
+            title = COALESCE($1, title),
+            content = COALESCE($2, content),
+            category = COALESCE($3, category),
+            tags = COALESCE($4, tags),
+            updated_at = NOW()
+            WHERE post_id = $5
+            RETURNING *`,
+            [title, content, category, tags, post_id]
+        )
+
+        res.status(200).json({status: "success updating post"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({status: "error"})
+    }
+})
+
 
 
 module.exports = router
