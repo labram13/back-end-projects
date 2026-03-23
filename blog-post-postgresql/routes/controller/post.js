@@ -60,6 +60,32 @@ router.put('/:id', async (req, res) =>{
     }
 })
 
+router.delete('/:id', async (req, res) => {
+    const post_id = req.params.id
+
+    try {
+
+        const post = await pool.query(
+            `
+            DELETE FROM post
+            WHERE post_id = $1
+            RETURNING *
+            `,
+            [post_id]
+        )
+        if (post.rowCount === 0) {
+            res.status(404).json({status: "post not found"})
+        }
+
+        res.status(200).json({status: "successfully deleted post"})
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({status: "error"})
+    }
+})
+
 
 
 module.exports = router
